@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+enum FrameFormat { JPEG, PNG, WEBP }
+
 class VideoFrameExtractor {
   static Future<List<String>> fromFile(
       {required File video,
       int imagesCount = 10,
       Duration from = Duration.zero,
       Duration to = Duration.zero,
-      ImageFormat imageFormat = ImageFormat.PNG,
+      FrameFormat frameFormat = FrameFormat.PNG,
       int quality = 10,
       int maxHeight = 0,
       int maxWidth = 0,
@@ -26,7 +28,7 @@ class VideoFrameExtractor {
           imagesCount: imagesCount,
           video: video.path,
           onProgress: onProgress,
-          imageFormat: imageFormat,
+          frameFormat: frameFormat,
           quality: quality,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
@@ -42,7 +44,7 @@ class VideoFrameExtractor {
       int imagesCount = 10,
       Duration from = Duration.zero,
       Duration to = Duration.zero,
-      ImageFormat imageFormat = ImageFormat.PNG,
+      FrameFormat frameFormat = FrameFormat.PNG,
       int quality = 10,
       int maxHeight = 0,
       int maxWidth = 0,
@@ -62,7 +64,7 @@ class VideoFrameExtractor {
           imagesCount: imagesCount,
           video: videoUrl,
           onProgress: onProgress,
-          imageFormat: imageFormat,
+          frameFormat: frameFormat,
           quality: quality,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
@@ -88,7 +90,7 @@ class VideoFrameExtractor {
       required int imagesCount,
       required String video,
       Function(double progress)? onProgress,
-      required ImageFormat imageFormat,
+      required FrameFormat frameFormat,
       required int quality,
       required int maxHeight,
       required int maxWidth,
@@ -121,7 +123,7 @@ class VideoFrameExtractor {
         String? currentFrame = await VideoThumbnail.thumbnailFile(
           video: video,
           timeMs: ms,
-          imageFormat: imageFormat,
+          imageFormat: _getImageFormat(frameFormat),
           quality: quality,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
@@ -140,6 +142,19 @@ class VideoFrameExtractor {
       return frames;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  static _getImageFormat(FrameFormat frameFormat) {
+    switch (frameFormat) {
+      case FrameFormat.PNG:
+        return ImageFormat.PNG;
+      case FrameFormat.JPEG:
+        return ImageFormat.JPEG;
+      case FrameFormat.WEBP:
+        return ImageFormat.WEBP;
+      default:
+        return ImageFormat.PNG;
     }
   }
 }
