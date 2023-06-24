@@ -1,6 +1,6 @@
 name: video_frame_extractor
-description: Extract frames from video.
-version: 0.0.2
+description: A Video Frame Extractor to extract frames from video file or video network URL.
+version: 0.0.3
 homepage: https://github.com/punit1111/video_frame_extractor
 
 environment:

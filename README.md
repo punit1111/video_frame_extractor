@@ -1,7 +1,7 @@
 
 ## Video Frame Extractor
 
-Extract frames from video file or video network url.
+A Video Frame Extractor to extract frames from video file or video network URL.
 
 ![Sample](https://github.com/punit1111/video_frame_extractor/blob/main/doc/preview.gif)
 
@@ -13,11 +13,7 @@ Extract frames from video file or video network url.
     await VideoFrameExtractor.fromNetwork(
       videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       imagesCount: 4,
-      destinationDirectoryPath: 'E:/video_to_images/exported',
-      maxWidth: 10,
-      maxHeight: 20,
-      quality: 1,
-      imageFormat: ImageFormat.PNG,
+      destinationDirectoryPath: '/storage/emulated/0/Download',
       onProgress: (progress) {},
     );
     

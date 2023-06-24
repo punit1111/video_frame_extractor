@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+/// output frame formats
 enum FrameFormat { JPEG, PNG, WEBP }
 
+/// [VideoFrameExtractor] providing functionality to extract frames from file or network
 class VideoFrameExtractor {
+  /// method to generate frames providing video file
   static Future<List<String>> fromFile(
       {required File video,
       int imagesCount = 10,
@@ -39,6 +42,7 @@ class VideoFrameExtractor {
     }
   }
 
+  /// method to generate frames providing video network url
   static Future<List<String>> fromNetwork(
       {required String videoUrl,
       int imagesCount = 10,
@@ -75,6 +79,7 @@ class VideoFrameExtractor {
     }
   }
 
+  /// to check provided destination path is valid or invalid
   static Future<void> _isDestinationPathValid(
       String destinationDirectoryPath) async {
     bool isDirectoryExists = await Directory(destinationDirectoryPath).exists();
@@ -83,6 +88,7 @@ class VideoFrameExtractor {
     }
   }
 
+  /// this method generates frames using [VideoThumbnail]
   static Future<List<String>> _generateFrames(
       {required dynamic videoPlayerController,
       required Duration to,
@@ -99,8 +105,11 @@ class VideoFrameExtractor {
       List<String> frames = [];
       int totalMilliSecs = 0;
       int endDuration = 0;
+
+      /// getting total video duration from video initialized
       int totalDuration = videoPlayerController.value.duration.inMilliseconds;
 
+      /// preparing start / end duration
       if (to == Duration.zero || to.inMilliseconds > totalDuration) {
         endDuration = videoPlayerController.value.duration.inMilliseconds;
       } else {
@@ -111,15 +120,19 @@ class VideoFrameExtractor {
         from = Duration.zero;
       }
 
+      /// total video duration
       totalMilliSecs = endDuration - (from.inMilliseconds);
 
       for (int i = 0; i < imagesCount; i++) {
+        /// given output image count
+        /// calculating time in milliseconds at which frame to be generated
         int ms = ((totalMilliSecs ~/ imagesCount) * i) + from.inMilliseconds;
 
         if (ms.isNegative || ms > endDuration) {
           continue;
         }
 
+        /// [VideoThumbnail] used to generate frame
         String? currentFrame = await VideoThumbnail.thumbnailFile(
           video: video,
           timeMs: ms,
@@ -138,6 +151,8 @@ class VideoFrameExtractor {
             double.parse(((i + 1) / imagesCount).toStringAsFixed(2));
         onProgress?.call(progress);
       }
+
+      /// disposing video controller
       videoPlayerController.dispose();
       return frames;
     } catch (e) {
@@ -145,6 +160,7 @@ class VideoFrameExtractor {
     }
   }
 
+  /// returns compatible format for [VideoThumbnail]
   static _getImageFormat(FrameFormat frameFormat) {
     switch (frameFormat) {
       case FrameFormat.PNG:

@@ -141,7 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
       videoUrl: textEditingController.text,
       imagesCount: 4,
       destinationDirectoryPath: '/storage/emulated/0/Download',
-      frameFormat: FrameFormat.PNG,
       onProgress: (progress) {},
     );
     setState(() {
