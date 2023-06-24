@@ -3,6 +3,9 @@
 
 Extract frames from video file or video network url.
 
+![Sample](https://github.com/punit1111/video_frame_extractor/blob/main/doc/preview.gif)
+
+
 ## Example
 
 ```
